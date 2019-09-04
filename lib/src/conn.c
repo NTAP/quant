@@ -848,7 +848,7 @@ static void __attribute__((nonnull(1))) new_cids(struct q_conn * const c,
 {
     // init dcid
     if (c->is_clnt) {
-        struct cid ndcid;
+        struct cid ndcid = {.seq = 0};
         mk_rand_cid(&ndcid);
         cid_cpy(&c->odcid, &ndcid);
         add_dcid(c, &ndcid);
