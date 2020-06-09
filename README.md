@@ -1,5 +1,6 @@
 # Quant
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/ec5037ef95ce4b358c10a8106c77454e)](https://app.codacy.com/manual/larseggert/quant?utm_source=github.com&utm_medium=referral&utm_content=NTAP/quant&utm_campaign=Badge_Grade_Dashboard)
 [![Build Status](https://travis-ci.org/NTAP/quant.svg?branch=master)](https://travis-ci.org/NTAP/quant)
 [![Total alerts](https://img.shields.io/lgtm/alerts/g/NTAP/quant.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/NTAP/quant/alerts/)
 
