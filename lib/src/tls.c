@@ -50,7 +50,9 @@
 #include <openssl/ossl_typ.h>
 #include <openssl/pem.h>
 #include <openssl/x509.h>
+#ifndef PTLS_WITHOUT_FUSION
 #include <picotls/fusion.h>
+#endif
 #include <picotls/openssl.h>
 
 #define aes128gcmsha256 ptls_openssl_aes128gcmsha256
@@ -1782,6 +1784,7 @@ void init_tls_ctx(const struct q_conf * const conf,
                                                                     0};
 
 #ifdef WITH_OPENSSL
+#ifndef PTLS_WITHOUT_FUSION
     const int fusion = ptls_fusion_is_supported_by_cpu();
     warn(DBG, "picotls fusion is%s supported",
          fusion ? "" : RED BLD " not" NRM);
@@ -1796,16 +1799,18 @@ void init_tls_ctx(const struct q_conf * const conf,
         &ptls_openssl_sha384};
 #endif
 
-    static const ptls_cipher_suite_t * cipher_suite[] = {
-        &ptls_openssl_aes128gcmsha256,
-#ifndef MINIMAL_CIPHERS
-        &ptls_openssl_aes256gcmsha384, &ptls_openssl_chacha20poly1305sha256,
-#endif
-        0};
     static const ptls_cipher_suite_t * cipher_suite_fusion[] = {
         &fusion_aes128gcmsha256,
 #ifndef MINIMAL_CIPHERS
         &fusion_aes256gcmsha384, &ptls_openssl_chacha20poly1305sha256,
+#endif
+        0};
+#endif
+
+    static const ptls_cipher_suite_t * cipher_suite[] = {
+        &ptls_openssl_aes128gcmsha256,
+#ifndef MINIMAL_CIPHERS
+        &ptls_openssl_aes256gcmsha384, &ptls_openssl_chacha20poly1305sha256,
 #endif
         0};
 #else
@@ -1829,7 +1834,7 @@ void init_tls_ctx(const struct q_conf * const conf,
     tls_ctx->cipher_suites = (conf && conf->force_chacha20)
                                  ? chacha20_cipher_suite
                                  : (
-#ifdef WITH_OPENSSL
+#ifndef PTLS_WITHOUT_FUSION
                                        fusion ? cipher_suite_fusion :
 #endif
                                               cipher_suite);

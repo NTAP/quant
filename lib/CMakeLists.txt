@@ -88,11 +88,14 @@ foreach(TARGET ${TARGETS})
     )
 
     if(NOT WITH_MINICRYPTO)
-      set(CRYPTOLIBS picotls-openssl picotls-fusion ${OPENSSL_LIBRARIES})
+      set(CRYPTOLIBS picotls-openssl ${OPENSSL_LIBRARIES})
+      if (PTLS_WITH_FUSION)
+        list(APPENF CRYPTOLIBS picotls-fusion)
+      endif()
     else()
       set(CRYPTOLIBS picotls-minicrypto)
     endif()
-    target_link_libraries(${TARGET} PRIVATE m picotls-core ${CRYPTOLIBS})
+    target_link_libraries(${TARGET} PRIVATE picotls-core ${CRYPTOLIBS})
 
     if(${TARGET} MATCHES ".*quant")
       install(DIRECTORY include/${PROJECT_NAME}
